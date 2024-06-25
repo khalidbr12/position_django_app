@@ -1,0 +1,92 @@
+{% extends 'layouts/master.html' %}
+{% block content %}
+<div class="container">
+    <h1>Product Search</h1>
+    
+    <form method="GET">
+        <input type="text" name="q" placeholder="Search product " value="{{ query }}">
+        
+        <select name="category">
+            <option value="">All Categories</option>
+            <option value="TRP" {% if category == 'TRP' %}selected{% endif %}>TRP</option>
+            <option value="C50" {% if category == 'C50' %}selected{% endif %}>C50</option>
+            <option value="APOLLO" {% if category == 'APOLLO' %}selected{% endif %}>APOLLO</option>
+            <option value="G-STREET" {% if category == 'G-STREET' %}selected{% endif %}>G-STREET</option>
+            <option value="MINI-JET" {% if category == 'MINI-JET' %}selected{% endif %}>MINI-JET</option>
+            <option value="CITY" {% if category == 'CITY' %}selected{% endif %}>CITY</option>
+            <option value="CRUZER" {% if category == 'CRUZER' %}selected{% endif %}>CRUZER</option>
+            <option value="ALPHA" {% if category == 'ALPHA' %}selected{% endif %}>ALPHA</option>
+            
+        </select>
+        <button type="submit">Search</button>
+    </form>
+    
+    <form action="{% url 'clear_selection' %}" method="POST">
+        {% csrf_token %}
+        <button class="btn btn-danger" type="submit">Clear Selection</button>
+    </form>
+    
+    <form action="{% url 'print_products' %}" method="POST">
+        {% csrf_token %}
+        <button class="btn btn-success mb-4" type="submit">Print Selected Products</button>
+        
+        <table class="product-table">
+            <thead>
+                <tr>
+                    <th>Select</th>
+                    <th>Name</th>
+                    <th>Reference</th>
+                    <th>Position</th>
+                    <th>Category</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for product in products %}
+                    <tr>
+                        <td>
+                            <input type="checkbox" name="selected_products" value="{{ product.id }}"
+                                   {% if product.id in selected_product_ids %}checked{% endif %}>
+                        </td>
+                        <td>{{ product.name }}</td>
+                        <td>{{ product.reference }}</td>
+                        <td>{{ product.position }}</td>
+                        <td>{{ product.get_category_display }}</td>
+                        <td>
+                            {% if product.active %}
+                                <span class="circle circle-green"></span> Active
+                            {% else %}
+                                <span class="circle circle-red"></span> Inactive
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="6">No products found.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        
+        <!-- Pagination links -->
+        <div class="pagination">
+            <span class="step-links">
+                {% if products.has_previous %}
+                    <a href="?page=1">&laquo; first</a>
+                    <a href="?page={{ products.previous_page_number }}">previous</a>
+                {% endif %}
+    
+                <span class="current">
+                    Page {{ products.number }} of {{ products.paginator.num_pages }}.
+                </span>
+    
+                {% if products.has_next %}
+                    <a href="?page={{ products.next_page_number }}">next</a>
+                    <a href="?page={{ products.paginator.num_pages }}">last &raquo;</a>
+                {% endif %}
+            </span>
+        </div>
+        
+    </form>
+</div>
+{% endblock content %}
