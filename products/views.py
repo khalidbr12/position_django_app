@@ -27,14 +27,14 @@ def product_search(request):
         products = Product.objects.all()
     
     # selected_product_ids = request.session.get('selected_product_ids', [])
-    paginator = Paginator(products, 10)  # Show 10 products per page
-    page = request.GET.get('page')
-    try:
-        products = paginator.page(page)
-    except PageNotAnInteger:
-        products = paginator.page(1)
-    except EmptyPage:
-        products = paginator.page(paginator.num_pages)
+    # paginator = Paginator(products, 10)  # Show 10 products per page
+    # page = request.GET.get('page')
+    # try:
+    #     products = paginator.page(page)
+    # except PageNotAnInteger:
+    #     products = paginator.page(1)
+    # except EmptyPage:
+    #     products = paginator.page(paginator.num_pages)
 
     context = {
         'products': products,

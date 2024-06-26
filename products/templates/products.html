@@ -16,6 +16,16 @@
             <option value="CITY" {% if category == 'CITY' %}selected{% endif %}>CITY</option>
             <option value="CRUZER" {% if category == 'CRUZER' %}selected{% endif %}>CRUZER</option>
             <option value="ALPHA" {% if category == 'ALPHA' %}selected{% endif %}>ALPHA</option>
+            <option value="C100" {% if category == 'C100' %}selected{% endif %}>C100</option>
+            <option value="110CC" {% if category == '110CC' %}selected{% endif %}>110CC</option>
+            <option value="DJ50" {% if category == 'DJ50' %}selected{% endif %}>DJ50</option>
+            <option value="FAME XR" {% if category == 'FAME XR' %}selected{% endif %}>FAME XR</option>
+            <option value="FIFTY" {% if category == 'FIFTY' %}selected{% endif %}>FIFTY</option>
+            <option value="C90" {% if category == 'C90' %}selected{% endif %}>C90</option>
+            <option value="FAME GAMA" {% if category == 'FAME GAMA' %}selected{% endif %}>FAME GAMA</option>
+            <option value="FAME XS" {% if category == 'FAME XS' %}selected{% endif %}>FAME XS</option>
+
+
             
         </select>
         <button type="submit">Search</button>
@@ -68,7 +78,7 @@
             </tbody>
         </table>
         
-        <!-- Pagination links -->
+        {% comment %} <!-- Pagination links -->
         <div class="pagination">
             <span class="step-links">
                 {% if products.has_previous %}
@@ -85,7 +95,7 @@
                     <a href="?page={{ products.paginator.num_pages }}">last &raquo;</a>
                 {% endif %}
             </span>
-        </div>
+        </div> {% endcomment %}
         
     </form>
 </div>

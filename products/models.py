@@ -10,7 +10,14 @@ class Product(models.Model):
         ('CITY','CITY'),
         ('CRUZER','CRUZER'),
         ('ALPHA','ALPHA'),
-        
+        ('C100','C100'),
+        ('110CC','110CC'),
+        ('DJ50','DJ50'),
+        ('FAME XR','FAME XR'),
+        ('FIFTY','FIFTY'),
+        ('C90','C90'),
+        ('FAME GAMA','FAME GAMA'),
+        ('FAME XS','FAME XS'),
     ]
     
     name = models.CharField(max_length=100)
