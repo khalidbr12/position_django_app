@@ -84,20 +84,16 @@ WSGI_APPLICATION = 'socomadis.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'socomadis',        # Replace with your database name
-        'USER': 'root',        # Replace with your database username
-        'PASSWORD': '',# Replace with your database password
-        'HOST': 'localhost',                 # Replace with your database host (e.g., 'localhost')
-        'PORT': '3306',                      # Replace with your database port
+        'NAME': 'socomadis', 
+        'USER': 'root',   
+        'PASSWORD': '',
+        'HOST': 'localhost', 
+        'PORT': '3306',  
     }
 }
 
-
-
-
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
-
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',

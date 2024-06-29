@@ -1,24 +1,24 @@
 {% extends 'layouts/master.html' %}
 
 {% block content %}
+
 <div class="container">
     <h1>Selected Products for Printing</h1>
     <table class="table">
         <thead>
           <tr>
-            <th scope="col">ID</th>
+            <th scope="col">Category</th>
             <th scope="col">Name</th>
-            <th scope="col">Reference</th>
             <th scope="col">Position</th>
           </tr>
         </thead>
         <tbody>
         {% for product in selected_products %}
           <tr>
-            <th scope="row">{{ product.id }}</th>
+            <td>{{ product.category }}</td>
             <td>{{ product.name }}</td>
-            <td>{{ product.reference }}</td>
             <td>{{ product.position }}</td>
+            
           </tr>
         {% empty %}
         <ul>
@@ -27,6 +27,14 @@
         {% endfor %}
         </tbody>
       </table>
+      <div class="text-center mb-3">
+      <button class="btn btn-success center" id="printButton">Imprimer</button>
+      </div>
+    <script>
+        document.getElementById('printButton').addEventListener('click', function() {
+            window.print();
+        });
+    </script>
     <form action="{% url 'product_search' %}" method="GET">
         <button type="submit">Back to Product Search</button>
     </form>

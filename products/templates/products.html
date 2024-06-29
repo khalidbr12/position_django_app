@@ -4,7 +4,7 @@
     <h1>Product Search</h1>
     
     <form method="GET">
-        <input type="text" name="q" placeholder="Search product " value="{{ query }}">
+        <input type="text" name="q" placeholder="Search product ">
         
         <select name="category">
             <option value="">All Categories</option>
@@ -24,9 +24,9 @@
             <option value="C90" {% if category == 'C90' %}selected{% endif %}>C90</option>
             <option value="FAME GAMA" {% if category == 'FAME GAMA' %}selected{% endif %}>FAME GAMA</option>
             <option value="FAME XS" {% if category == 'FAME XS' %}selected{% endif %}>FAME XS</option>
-
-
-            
+            <option value="S50" {% if category == 'S50' %}selected{% endif %}>S50</option>
+            <option value="MILANO" {% if category == 'MILANO' %}selected{% endif %}>MILANO</option>  
+            <option value="TANK" {% if category == 'TANK' %}selected{% endif %}>TANK</option>                      
         </select>
         <button type="submit">Search</button>
     </form>
@@ -35,11 +35,11 @@
         {% csrf_token %}
         <button class="btn btn-danger" type="submit">Clear Selection</button>
     </form>
-    
     <form action="{% url 'print_products' %}" method="POST">
         {% csrf_token %}
-        <button class="btn btn-success mb-4" type="submit">Print Selected Products</button>
-        
+        <!-- form fields and products listing -->
+        <button class="btn btn-info mb-3" type="submit" name="action" value="save_and_stay">Save & Stay</button>
+        <button class="btn btn-success mb-3" type="submit" name="action" value="save_and_print">Save & Print</button>
         <table class="product-table">
             <thead>
                 <tr>
@@ -76,27 +76,61 @@
                     </tr>
                 {% endfor %}
             </tbody>
-        </table>
-        
-        {% comment %} <!-- Pagination links -->
-        <div class="pagination">
-            <span class="step-links">
-                {% if products.has_previous %}
-                    <a href="?page=1">&laquo; first</a>
-                    <a href="?page={{ products.previous_page_number }}">previous</a>
-                {% endif %}
-    
-                <span class="current">
-                    Page {{ products.number }} of {{ products.paginator.num_pages }}.
-                </span>
-    
-                {% if products.has_next %}
-                    <a href="?page={{ products.next_page_number }}">next</a>
-                    <a href="?page={{ products.paginator.num_pages }}">last &raquo;</a>
-                {% endif %}
-            </span>
-        </div> {% endcomment %}
-        
+        </table>   
+        <!-- Pagination links -->
+        <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-center">
+          
+              {% if products.has_previous %}
+                <li class="page-item">
+                  <a class="page-link" href="?page=1">&laquo; First</a>
+                </li>
+                <li class="page-item">
+                  <a class="page-link" href="?page={{ products.previous_page_number }}">Previous</a>
+                </li>
+              {% else %}
+                <li class="page-item disabled">
+                  <span class="page-link">&laquo; First</span>
+                </li>
+                <li class="page-item disabled">
+                  <span class="page-link">Previous</span>
+                </li>
+              {% endif %}
+          
+              {% if products.paginator.num_pages > 1 %}
+                {% for num in products.paginator.page_range %}
+                  {% if num == products.number %}
+                    <li class="page-item active" aria-current="page">
+                      <span class="page-link">{{ num }}</span>
+                    </li>
+                  {% elif num > products.number|add:'-2' and num < products.number|add:'2' %}
+                    <li class="page-item">
+                      <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                    </li>
+                  {% endif %}
+                {% endfor %}
+              {% endif %}
+          
+              {% if products.has_next %}
+                <li class="page-item">
+                  <a class="page-link" href="?page={{ products.next_page_number }}">Next</a>
+                </li>
+                <li class="page-item">
+                  <a class="page-link" href="?page={{ products.paginator.num_pages }}">Last &raquo;</a>
+                </li>
+              {% else %}
+                <li class="page-item disabled">
+                  <span class="page-link">Next</span>
+                </li>
+                <li class="page-item disabled">
+                  <span class="page-link">Last &raquo;</span>
+                </li>
+              {% endif %}
+            </ul>
+        </nav>
+               
     </form>
 </div>
+{% include 'parts/footer.html' %}
 {% endblock content %}
+
