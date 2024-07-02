@@ -7,10 +7,8 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 def product_search(request):
     query = request.GET.get('q')
     category = request.GET.get('category')
-
-    # Initial queryset
     products = Product.objects.all()
-
+    
     # Filter based on query if provided
     if query:
         search_terms = query.split(',')

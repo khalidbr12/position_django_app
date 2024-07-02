@@ -7,7 +7,7 @@ admin.site.index_title = 'Administration'
 
 class ProductAdmin(admin.ModelAdmin):
     list_display = ('name', 'reference', 'position', 'active', 'category')
-    search_fields = ('name', 'reference') 
+    search_fields = ('name', 'reference','position', 'category') 
 
 # Register your models here.
 admin.site.register(Product, ProductAdmin)
