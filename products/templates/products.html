@@ -4,7 +4,7 @@
     <h1>Product Search</h1>
     
     <form method="GET">
-        <input type="text" name="q" placeholder="Search product ">
+        <input type="text" name="q" placeholder="Search product " value="{% if query and query != 'none' %}{{ query }}{% endif %}">
         
         <select name="category">
             <option value="">All Categories</option>
@@ -45,8 +45,8 @@
                 <tr>
                     <th>Select</th>
                     <th>Name</th>
-                    <th>Reference</th>
                     <th>Position</th>
+                    <th>Reference</th>
                     <th>Category</th>
                     <th>Status</th>
                 </tr>
@@ -59,8 +59,8 @@
                                    {% if product.id in selected_product_ids %}checked{% endif %}>
                         </td>
                         <td>{{ product.name }}</td>
-                        <td>{{ product.reference }}</td>
                         <td>{{ product.position }}</td>
+                        <td>{{ product.reference }}</td>
                         <td>{{ product.get_category_display }}</td>
                         <td>
                             {% if product.active %}
@@ -77,58 +77,72 @@
                 {% endfor %}
             </tbody>
         </table>   
-        <!-- Pagination links -->
+        <!-- Pagination-->
         <nav aria-label="Page navigation example">
-            <ul class="pagination justify-content-center">
-          
+          <ul class="pagination justify-content-center">
+      
+              <!-- First and Previous page links -->
               {% if products.has_previous %}
-                <li class="page-item">
-                  <a class="page-link" href="?page=1">&laquo; First</a>
-                </li>
-                <li class="page-item">
-                  <a class="page-link" href="?page={{ products.previous_page_number }}">Previous</a>
-                </li>
+              <li class="page-item">
+                  <a class="page-link" href="?page=1{% if query %}&q={{ query }}{% endif %}{% if category %}&category={{ category }}{% endif %}">
+                      &laquo; First
+                  </a>
+              </li>
+              <li class="page-item">
+                  <a class="page-link" href="?page={{ products.previous_page_number }}{% if query %}&q={{ query }}{% endif %}{% if category %}&category={{ category }}{% endif %}">
+                      Previous
+                  </a>
+              </li>
               {% else %}
-                <li class="page-item disabled">
+              <li class="page-item disabled">
                   <span class="page-link">&laquo; First</span>
-                </li>
-                <li class="page-item disabled">
+              </li>
+              <li class="page-item disabled">
                   <span class="page-link">Previous</span>
-                </li>
+              </li>
               {% endif %}
-          
-              {% if products.paginator.num_pages > 1 %}
-                {% for num in products.paginator.page_range %}
-                  {% if num == products.number %}
-                    <li class="page-item active" aria-current="page">
+      
+              <!-- Pagination links -->
+              {% for num in products.paginator.page_range %}
+                  {% if products.number == num %}
+                  <li class="page-item active" aria-current="page">
                       <span class="page-link">{{ num }}</span>
-                    </li>
-                  {% elif num > products.number|add:'-2' and num < products.number|add:'2' %}
-                    <li class="page-item">
-                      <a class="page-link" href="?page={{ num }}">{{ num }}</a>
-                    </li>
+                  </li>
+                  {% elif num > products.number|add:'-3' and num < products.number|add:'3' %}
+                  <li class="page-item">
+                      <a class="page-link" href="?page={{ num }}{% if query %}&q={{ query }}{% endif %}{% if category %}&category={{ category }}{% endif %}">
+                          {{ num }}
+                      </a>
+                  </li>
+                  {% elif num == products.number|add:'-3' or num == products.number|add:'3' %}
+                  <li class="page-item disabled">
+                      <span class="page-link">...</span>
+                  </li>
                   {% endif %}
-                {% endfor %}
-              {% endif %}
-          
+              {% endfor %}
+      
+              <!-- Next and Last page links -->
               {% if products.has_next %}
-                <li class="page-item">
-                  <a class="page-link" href="?page={{ products.next_page_number }}">Next</a>
-                </li>
-                <li class="page-item">
-                  <a class="page-link" href="?page={{ products.paginator.num_pages }}">Last &raquo;</a>
-                </li>
+              <li class="page-item">
+                  <a class="page-link" href="?page={{ products.next_page_number }}{% if query %}&q={{ query }}{% endif %}{% if category %}&category={{ category }}{% endif %}">
+                      Next
+                  </a>
+              </li>
+              <li class="page-item">
+                  <a class="page-link" href="?page={{ products.paginator.num_pages }}{% if query %}&q={{ query }}{% endif %}{% if category %}&category={{ category }}{% endif %}">
+                      Last &raquo;
+                  </a>
+              </li>
               {% else %}
-                <li class="page-item disabled">
+              <li class="page-item disabled">
                   <span class="page-link">Next</span>
-                </li>
-                <li class="page-item disabled">
+              </li>
+              <li class="page-item disabled">
                   <span class="page-link">Last &raquo;</span>
-                </li>
+              </li>
               {% endif %}
-            </ul>
-        </nav>
-               
+          </ul>
+      </nav>     
     </form>
 </div>
 {% include 'parts/footer.html' %}

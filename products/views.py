@@ -1,13 +1,17 @@
+from pyexpat.errors import messages
 from django.shortcuts import render, redirect
 from .models import Product
 from django.db.models import Q
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.contrib import messages
 
 def product_search(request):
     query = request.GET.get('q')
     category = request.GET.get('category')
 
+    # Initial queryset
+    products = Product.objects.all()
+
+    # Filter based on query if provided
     if query:
         search_terms = query.split(',')
         query_filter = Q()
@@ -15,23 +19,17 @@ def product_search(request):
             query_filter |= Q(name__icontains=term.strip())
             query_filter |= Q(reference__icontains=term.strip())
             query_filter |= Q(position__icontains=term.strip())
-            
+        products = products.filter(query_filter)
 
+    # Further filter by category if provided
+    if category:
+        products = products.filter(category=category)
 
-        products = Product.objects.filter(query_filter)
-
-        if category:
-            products = products.filter(category=category)
-    elif category:
-        products = Product.objects.filter(category=category)
-    else:
-        products = Product.objects.all()
-    
-    selected_product_ids = request.session.get('selected_product_ids', [])
-    paginator = Paginator(products, 10)  
-    page = request.GET.get('page')
+    # Pagination
+    paginator = Paginator(products, 10)
+    page_number = request.GET.get('page')
     try:
-        products = paginator.page(page)
+        products = paginator.page(page_number)
     except PageNotAnInteger:
         products = paginator.page(1)
     except EmptyPage:
@@ -43,6 +41,7 @@ def product_search(request):
         'category': category,
     }
     return render(request, 'products.html', context)
+
 
 def clear_selection(request):
     if 'selected_product_ids' in request.session:
