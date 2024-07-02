@@ -65,5 +65,4 @@ def print_products(request):
             updated_selected_ids = list(set(current_selected_ids + selected_product_ids))
             request.session['selected_product_ids'] = updated_selected_ids
             return redirect('product_search') 
-        
     return redirect('product_search')
