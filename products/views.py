@@ -64,8 +64,6 @@ def print_products(request):
             current_selected_ids = request.session.get('selected_product_ids', [])
             updated_selected_ids = list(set(current_selected_ids + selected_product_ids))
             request.session['selected_product_ids'] = updated_selected_ids
-            
-            messages.success(request, 'Selected products have been saved.')
             return redirect('product_search') 
         
     return redirect('product_search')
