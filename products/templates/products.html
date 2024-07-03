@@ -1,13 +1,13 @@
 {% extends 'layouts/master.html' %}
 {% block content %}
 <div class="container">
-    <h1>Product Search</h1>
+    <h1>Recherche des produits</h1>
     
     <form method="GET">
-        <input type="text" name="q" placeholder="Search product " value="{% if query and query != 'none' %}{{ query }}{% endif %}">
+        <input type="text" name="q" placeholder="Rechercher un produit " value="{% if query and query != 'none' %}{{ query }}{% endif %}">
         
         <select name="category">
-            <option value="">All Categories</option>
+            <option value="">toutes les catégories</option>
             <option value="TRP" {% if category == 'TRP' %}selected{% endif %}>TRP</option>
             <option value="C50" {% if category == 'C50' %}selected{% endif %}>C50</option>
             <option value="APOLLO" {% if category == 'APOLLO' %}selected{% endif %}>APOLLO</option>
@@ -28,26 +28,26 @@
             <option value="MILANO" {% if category == 'MILANO' %}selected{% endif %}>MILANO</option>  
             <option value="TANK" {% if category == 'TANK' %}selected{% endif %}>TANK</option>                      
         </select>
-        <button type="submit">Search</button>
+        <button type="submit">Recherche</button>
     </form>
     
     <form action="{% url 'clear_selection' %}" method="POST">
         {% csrf_token %}
-        <button class="btn btn-danger" type="submit">Clear Selection</button>
+        <button class="btn btn-danger" type="submit">Effacer la sélection</button>
     </form>
     <form action="{% url 'print_products' %}" method="POST">
         {% csrf_token %}
         <!-- form fields and products listing -->
-        <button class="btn btn-info mb-3" type="submit" name="action" value="save_and_stay">Save & Stay</button>
-        <button class="btn btn-success mb-3" type="submit" name="action" value="save_and_print">Save & Print</button>
+        <button class="btn btn-info mb-3" type="submit" name="action" value="save_and_stay">Sauvgarder</button>
+        <button class="btn btn-success mb-3" type="submit" name="action" value="save_and_print">Imprimer</button>
         <table class="product-table">
             <thead>
                 <tr>
                     <th>Select</th>
-                    <th>Name</th>
+                    <th>Nom</th>
                     <th>Position</th>
                     <th>Reference</th>
-                    <th>Category</th>
+                    <th>Categorie</th>
                     <th>Status</th>
                 </tr>
             </thead>
@@ -72,7 +72,7 @@
                     </tr>
                 {% empty %}
                     <tr>
-                        <td colspan="6">No products found.</td>
+                        <td colspan="6">Aucun produit trouvé.</td>
                     </tr>
                 {% endfor %}
             </tbody>
@@ -145,6 +145,5 @@
       </nav>     
     </form>
 </div>
-{% include 'parts/footer.html' %}
 {% endblock content %}
 
